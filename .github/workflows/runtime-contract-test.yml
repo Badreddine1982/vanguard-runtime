@@ -11,10 +11,10 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  contract-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout runtime
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -24,6 +24,9 @@ jobs:
 
       - name: Install test runner
         run: python -m pip install --upgrade pip pytest
+
+      - name: Verify pinned contract
+        run: python scripts/verify_contract_lock.py
 
       - name: Test execution boundary
         run: python -m pytest -q
