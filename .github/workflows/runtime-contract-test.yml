@@ -1,0 +1,20 @@
+name: Runtime Contract Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - init/runtime-scaffold
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test execution boundary
+        run: python -m pytest -q
