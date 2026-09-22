@@ -1,0 +1,12 @@
+contract:
+  id: runtime.execution
+  version: 1.0.0
+
+source:
+  repository: Badreddine1982/vanguard-contracts
+  path: contracts/runtime/execution.v1.yaml
+  commit: 775c9850d6a2231cc619b3d64570ca9f08429635
+
+verification:
+  immutable_source: true
+  required: true
