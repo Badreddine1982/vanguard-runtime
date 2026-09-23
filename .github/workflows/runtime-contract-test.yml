@@ -25,8 +25,11 @@ jobs:
       - name: Install test runner
         run: python -m pip install --upgrade pip pytest
 
-      - name: Verify LOCKED state
+      - name: Verify lifecycle definition
         run: python scripts/verify_contract_lifecycle.py
+
+      - name: Prove lifecycle transitions in isolated fixture
+        run: python scripts/test_contract_lifecycle.py
 
       - name: Verify pinned contract
         run: python scripts/verify_contract_lock.py
@@ -34,16 +37,8 @@ jobs:
       - name: Test execution boundary
         run: python -m pytest -q
 
-      - name: Record VERIFIED gate
+      - name: Verify adoption remains explicit
         run: |
-          test -f contracts.lock
-          test -f verification/contract-lifecycle.yaml
-          echo "VERIFIED gate: PASS"
-
-      - name: Record CONFIRMED gate
-        run: |
-          echo "CONFIRMED gate: evidence criteria passed in this CI run"
-
-      - name: Record ADOPTED gate
-        run: |
-          echo "ADOPTED gate: blocked by design — explicit adoption approval required"
+          grep -q "automatic_adoption: false" verification/contract-lifecycle.yaml
+          grep -q "explicit_adoption_approval" verification/contract-lifecycle.yaml
+          echo "ADOPTION GATE: EXPLICIT APPROVAL REQUIRED"
