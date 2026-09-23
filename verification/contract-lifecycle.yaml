@@ -1,0 +1,34 @@
+lifecycle:
+  id: runtime.execution.lifecycle
+  version: 1.0.0
+
+states:
+  - LOCKED
+  - VERIFIED
+  - CONFIRMED
+  - ADOPTED
+
+transitions:
+  LOCKED:
+    requires:
+      - contracts.lock
+      - immutable_source
+  VERIFIED:
+    from: LOCKED
+    requires:
+      - lock_verification_pass
+      - runtime_tests_pass
+  CONFIRMED:
+    from: VERIFIED
+    requires:
+      - evidence_record
+      - confirmation_criteria_pass
+  ADOPTED:
+    from: CONFIRMED
+    requires:
+      - explicit_adoption_approval
+
+governance:
+  automatic_adoption: false
+  evidence_gated: true
+  rule: "Probability may enter the loop, but it does not leave the loop as truth without confirmation."
