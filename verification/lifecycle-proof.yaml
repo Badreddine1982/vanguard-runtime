@@ -1,0 +1,21 @@
+proof:
+  id: runtime.execution.lifecycle-mechanism
+  subject: mechanism-only-fixture
+  purpose: prove state transitions without adopting runtime.execution
+
+evidence:
+  lock_verification_pass: true
+  runtime_tests_pass: true
+  evidence_record_present: true
+  confirmation_criteria_pass: true
+  explicit_adoption_approval: true
+
+expected:
+  sequence:
+    - LOCKED
+    - VERIFIED
+    - CONFIRMED
+    - ADOPTED
+
+governance:
+  affects_real_contract_state: false

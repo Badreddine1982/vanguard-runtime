@@ -1,0 +1,14 @@
+component:
+  id: vanguard-runtime
+  version: 0.1.0-poc
+  status: incubator
+
+provides:
+  - runtime.execution
+
+requires:
+  - runtime.execution.contract
+
+governance:
+  adoption: evidence-gated
+  authority: explicit-confirmation-required
