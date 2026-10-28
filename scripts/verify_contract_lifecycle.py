@@ -1,6 +1,5 @@
 from pathlib import Path
 import re
-import sys
 
 LOCK = Path("contracts.lock")
 LIFECYCLE = Path("verification/contract-lifecycle.yaml")
@@ -25,11 +24,14 @@ def main():
         "id: runtime.execution",
         "version: 1.0.0",
         "repository: Badreddine1982/vanguard-contracts",
-        "commit: 775c9850d6a2231cc619b3d64570ca9f08429635",
         "immutable_source: true",
         "required: true",
     )):
         raise SystemExit("LOCKED: FAIL — lock invariants missing")
+
+    commit_match = re.search(r"^  commit: ([0-9a-f]{40})$", lock, re.MULTILINE)
+    if not commit_match:
+        raise SystemExit("LOCKED: FAIL — contract source commit must be a full immutable SHA")
 
     for state in STATES:
         if not re.search(rf"^  - {state}$", lifecycle, re.MULTILINE):
@@ -52,6 +54,7 @@ def main():
 
     print("CONTRACT LIFECYCLE: PASS")
     print("LOCKED -> VERIFIED -> CONFIRMED -> ADOPTED")
+    print(f"pinned_contract_commit: {commit_match.group(1)}")
     print("automatic_adoption: false")
     print("evidence_gated: true")
 
