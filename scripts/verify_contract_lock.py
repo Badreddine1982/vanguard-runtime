@@ -29,20 +29,19 @@ def main():
 
     required = [
         "id: runtime.execution",
-        "version: 1.0.0",
+        "version: 2.0.0",
         "input: ExecutionRequest",
         "output: ExecutionResult",
         "audit_sink: AuditSink",
-        "request_id_required: true",
-        "deterministic_errors: true",
+        "action_executor: ActionExecutor",
         "audit_event_required: true",
-        "audit_event_emission_owner: runtime",
-        "audit_event_sink_acceptance_required: true",
+        "timeout_required: true",
+        "timeout_unit: milliseconds",
+        "EXECUTION_TIMEOUT",
+        "EXECUTION_STATE_UNKNOWN",
         "AUDIT_SINK_FAILURE",
-        "success_required: true",
-        "error_code_required_on_failure: true",
+        "automatic_adoption: false",
     ]
-
     missing = [item for item in required if item not in contract]
     if missing:
         raise SystemExit("contract verification failed: " + ", ".join(missing))
@@ -50,6 +49,7 @@ def main():
     print("CONTRACT LOCK: PASS")
     print(f"source: {repository}@{commit}")
     print(f"path: {path}")
+    print("contract version: 2.0.0 (proposed; not adopted)")
 
 
 if __name__ == "__main__":
