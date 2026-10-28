@@ -4,12 +4,14 @@ from urllib.request import Request, urlopen
 LOCK = Path("contracts.lock")
 RAW_BASE = "https://raw.githubusercontent.com/"
 
+
 def value_after(text, key):
     prefix = f"  {key}: "
     for line in text.splitlines():
         if line.startswith(prefix):
             return line[len(prefix):].strip().strip('"')
     return None
+
 
 def main():
     lock = LOCK.read_text(encoding="utf-8")
@@ -30,10 +32,13 @@ def main():
         "version: 1.0.0",
         "input: ExecutionRequest",
         "output: ExecutionResult",
+        "audit_sink: AuditSink",
         "request_id_required: true",
         "deterministic_errors: true",
         "audit_event_required: true",
-        "timeout_required: true",
+        "audit_event_emission_owner: runtime",
+        "audit_event_sink_acceptance_required: true",
+        "AUDIT_SINK_FAILURE",
         "success_required: true",
         "error_code_required_on_failure: true",
     ]
@@ -45,6 +50,7 @@ def main():
     print("CONTRACT LOCK: PASS")
     print(f"source: {repository}@{commit}")
     print(f"path: {path}")
+
 
 if __name__ == "__main__":
     main()
