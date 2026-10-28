@@ -5,7 +5,7 @@ contract:
 source:
   repository: Badreddine1982/vanguard-contracts
   path: contracts/runtime/execution.v1.yaml
-  commit: 775c9850d6a2231cc619b3d64570ca9f08429635
+  commit: f351c6ab6890d536b7f549b92c72b0b5587f3d6a
 
 verification:
   immutable_source: true
