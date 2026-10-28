@@ -7,10 +7,6 @@ LIFECYCLE = Path("verification/contract-lifecycle.yaml")
 STATES = ("LOCKED", "VERIFIED", "CONFIRMED", "ADOPTED")
 
 
-def required(text, value):
-    return value in text
-
-
 def main():
     if not LOCK.exists():
         raise SystemExit("LOCKED: FAIL — contracts.lock missing")
@@ -20,14 +16,15 @@ def main():
     lock = LOCK.read_text(encoding="utf-8")
     lifecycle = LIFECYCLE.read_text(encoding="utf-8")
 
-    if not all(required(lock, item) for item in (
+    if not all(item in lock for item in (
         "id: runtime.execution",
-        "version: 1.0.0",
+        "version: 2.0.0",
         "repository: Badreddine1982/vanguard-contracts",
+        "path: contracts/runtime/execution.v2.yaml",
         "immutable_source: true",
         "required: true",
     )):
-        raise SystemExit("LOCKED: FAIL — lock invariants missing")
+        raise SystemExit("LOCKED: FAIL — v2 lock invariants missing")
 
     commit_match = re.search(r"^  commit: ([0-9a-f]{40})$", lock, re.MULTILINE)
     if not commit_match:
@@ -39,7 +36,6 @@ def main():
 
     if "automatic_adoption: false" not in lifecycle:
         raise SystemExit("governance: FAIL — automatic adoption must remain disabled")
-
     if "evidence_gated: true" not in lifecycle:
         raise SystemExit("governance: FAIL — evidence gate missing")
 
